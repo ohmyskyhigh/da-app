@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import react, {Component, Fragment} from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+  var state = {
+    inputValue: '123'
+  }
+  return(
+    <Fragment>
+      <header>
+        <input
+          value={state.inputValue}
+          onChange = handleInput
+        />
+        <button>提交</button>
       </header>
-    </div>
+      <ul>
+        <li> learn </li>
+        <li> do </li>
+      </ul>
+    </Fragment>
+
   );
 }
 
