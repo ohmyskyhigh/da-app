@@ -1,5 +1,6 @@
 import react, {Component, Fragment} from 'react';
 import './Todos.css'
+import TodoItems from './TodoItems'
 
 class Todos extends Component{
   constructor(props){
@@ -10,6 +11,9 @@ class Todos extends Component{
              'learn it'
             ]
     }
+    this.handleInput = this.handleInput.bind(this)
+    this.handleButtonClick = this.handleButtonClick.bind(this)
+    this.deleteItem = this.deleteItem.bind(this)
   }
 
   render(){
@@ -22,21 +26,22 @@ class Todos extends Component{
             id = "insertArea"
             className='input'
             value={this.state.inputValue}
-            onChange={this.handleInput.bind(this)}
+            onChange={this.handleInput}
           />
           {/*以下是提交键，提交todos*/}
-          <button onClick={this.handleButtonClick.bind(this) }>提交</button>
+          <button onClick={this.handleButtonClick}>提交</button>
         </header>
         <div>
           {/*以下是显示，显示todos*/}
           {
             this.state.list.map(
               (item, idx) =>
-              <li
-              key={idx}
-              onClick={this.deleteItem.bind(this, idx)}
-              dangerouslySetInnerHTML={{__html: item}}>
-              </li>
+              <div>
+                <TodoItems
+                  TodoContents={item}
+                  ContenctIdx={idx}
+                  deleteItem = {this.deleteItem.bind(this)}/>
+              </div>
             )
           }
         </div>
@@ -45,28 +50,29 @@ class Todos extends Component{
   }
 
   handleInput(e){
-    this.setState(
-      {
-        inputValue: e.target.value
-      }
+    const {value} = e.target
+    this.setState((prevState) =>
+      ({
+        inputValue: value
+      })
     )
   }
 
   handleButtonClick(){
-    this.setState(
-      {
-        list: [...this.state.list, this.state.inputValue],
+    this.setState((prevState) =>
+      ({
+        list: [...prevState.list, prevState.inputValue],
         inputValue: ''
-      }
+      })
     )
   }
 
   deleteItem(idx){
-    const todoLis = [...this.state.list];
-    todoLis.splice(idx, 1)
-    this.setState(
+    this.setState((prevState) =>
       {
-        list: todoLis
+        const todoLis = [...this.state.list];
+        todoLis.splice(idx, 1)
+        return {todoLis}
       }
     )
   }
