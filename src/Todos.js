@@ -14,6 +14,7 @@ class Todos extends Component{
     this.handleInput = this.handleInput.bind(this)
     this.handleButtonClick = this.handleButtonClick.bind(this)
     this.deleteItem = this.deleteItem.bind(this)
+    this.handleDisplay = this.handleDisplay.bind(this)
   }
 
   render(){
@@ -32,29 +33,33 @@ class Todos extends Component{
           <button onClick={this.handleButtonClick}>提交</button>
         </header>
         <div>
-          {/*以下是显示，显示todos*/}
-          {
-            this.state.list.map(
-              (item, idx) =>
-              <div>
-                <TodoItems
-                  TodoContents={item}
-                  ContenctIdx={idx}
-                  deleteItem = {this.deleteItem.bind(this)}/>
-              </div>
-            )
-          }
+          {this.handleDisplay()}
         </div>
       </Fragment>
     );
   }
 
+  handleDisplay(){
+    return (
+      this.state.list.map(
+        (item, idx) =>
+        <div key={idx}>
+          <TodoItems
+            TodoContents={item}
+            ContenctIdx={idx}
+            deleteItem = {this.deleteItem}
+          />
+        </div>
+      )
+    )
+  }
+
   handleInput(e){
     const {value} = e.target
     this.setState((prevState) =>
-      ({
-        inputValue: value
-      })
+      (
+        {inputValue: value}
+      )
     )
   }
 
@@ -70,9 +75,10 @@ class Todos extends Component{
   deleteItem(idx){
     this.setState((prevState) =>
       {
-        const todoLis = [...this.state.list];
-        todoLis.splice(idx, 1)
-        return {todoLis}
+        const list = [...prevState.list];
+        list.splice(idx, 1);
+        console.log(list)
+        return {list}
       }
     )
   }

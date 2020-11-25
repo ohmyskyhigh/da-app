@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 class TodoItems extends Component{
 
@@ -20,7 +21,15 @@ class TodoItems extends Component{
   handleButtonClick(){
     const {deleteItem, ContenctIdx} = this.props
     deleteItem(ContenctIdx)
+    console.log('clicked')
   }
 }
+
+TodoItems.propTypes = {
+  TodoContents: PropTypes.string,
+  deleteItem: PropTypes.func,
+  ContenctIdx: PropTypes.number
+}
+
 
 export default TodoItems
