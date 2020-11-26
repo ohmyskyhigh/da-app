@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
 class TodoItems extends Component{
 
   constructor(props){
@@ -9,7 +8,19 @@ class TodoItems extends Component{
     this.handleButtonClick = this.handleButtonClick.bind(this)
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    console.log(nextProps.TodoContents)
+    if(nextProps.TodoContents !== this.props.TodoContents){
+      console.log('child got content')
+      return true
+    }
+    else{
+      return false;
+    }
+  }
+
   render(){
+    console.log('child rander')
     const {TodoContents} = this.props
     return (
         <div onClick={this.handleButtonClick}>
@@ -26,7 +37,7 @@ class TodoItems extends Component{
 }
 
 TodoItems.propTypes = {
-  TodoContents: PropTypes.string,
+  TodoContents: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   deleteItem: PropTypes.func,
   ContenctIdx: PropTypes.number
 }

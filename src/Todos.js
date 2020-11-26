@@ -1,20 +1,37 @@
 import react, {Component, Fragment} from 'react';
 import './Todos.css'
+import axios from 'axios';
 import TodoItems from './TodoItems'
 
 class Todos extends Component{
+  //生命周期函数：在组件创建的时候就会被启动
   constructor(props){
     super(props);
     this.state = {
       inputValue: 'fxx',
-      list: ['do it',
-             'learn it'
+      list: [
             ]
     }
     this.handleInput = this.handleInput.bind(this)
     this.handleButtonClick = this.handleButtonClick.bind(this)
     this.deleteItem = this.deleteItem.bind(this)
     this.handleDisplay = this.handleDisplay.bind(this)
+    this.componentDidMount = this.componentDidMount.bind(this)
+  }
+
+  //生命周期函数：在组件即将被挂载到页面上的时候自动启动
+  //componentWillMount
+
+  componentDidMount(){
+    axios.get('/api/todos')
+         .then((res)=>{
+            const data = res.data;
+            this.setState(()=>{
+              console.log(data);
+              return {list: res.data}
+            })
+          })
+         .catch(()=>{alert('error')});
   }
 
   render(){
@@ -39,10 +56,11 @@ class Todos extends Component{
     );
   }
 
+  //生命周期函数：当组件被挂载到页面之后会被执行
+  //componentDidMount
+
   handleDisplay(){
-    return (
-      this.state.list.map(
-        (item, idx) =>
+    return(this.state.list.map((item, idx) =>
         <div key={idx}>
           <TodoItems
             TodoContents={item}
@@ -51,25 +69,22 @@ class Todos extends Component{
           />
         </div>
       )
-    )
+    );
   }
 
   handleInput(e){
-    const {value} = e.target
+    const {value} = e.target;
     this.setState((prevState) =>
-      (
-        {inputValue: value}
-      )
-    )
+        {return {inputValue: value}}
+    );
   }
 
   handleButtonClick(){
-    this.setState((prevState) =>
-      ({
-        list: [...prevState.list, prevState.inputValue],
-        inputValue: ''
-      })
-    )
+    this.setState((prevState) =>{
+        return {list: [...prevState.list, prevState.inputValue],
+                inputValue: ''}
+        }
+    );
   }
 
   deleteItem(idx){
@@ -80,7 +95,7 @@ class Todos extends Component{
         console.log(list)
         return {list}
       }
-    )
+    );
   }
 }
 
